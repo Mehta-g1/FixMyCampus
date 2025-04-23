@@ -9,12 +9,20 @@ import datetime
 #         database="fmp"
 #     )
 
-def get_connection():
+# def get_connection():  # My database
+#     return mysql.connector.connect(
+#         host = "sql12.freesqldatabase.com",
+#         database = "sql12773714",
+#         username = "sql12773714",
+#         password = "ML3VxVa9L2"
+#     )
+
+def get_connection(): #ajit's database
     return mysql.connector.connect(
-        host = "sql12.freesqldatabase.com",
-        database = "sql12773714",
-        username = "sql12773714",
-        password = "ML3VxVa9L2"
+        host="sql12.freesqldatabase.com",
+        user="sql12774989",
+        password="acxEkHFzcu",
+        database="sql12774989"
     )
 
 
@@ -29,7 +37,8 @@ def create_Table():
             password VARCHAR(100),
             mob_num VARCHAR(15),
             gender VARCHAR(10),
-            roll_no VARCHAR(15) PRIMARY KEY
+            roll_no VARCHAR(15) PRIMARY KEY,
+            is_banned BOOLEAN DEFAULT FALSE
         )
     ''')    
     conn.commit()
@@ -39,7 +48,7 @@ def fetch_user(roll_no):
     conn = get_connection()
     cur = conn.cursor()
     try:
-        cur.execute("SELECT first_name, last_name, email, mob_num, gender, roll_no,ban_status FROM users WHERE roll_no = %s", (roll_no,))
+        cur.execute("SELECT first_name, last_name, email, mob_num, gender, roll_no,is_banned FROM users WHERE roll_no = %s", (roll_no,))
         user = cur.fetchone()
         return user
     except Exception as e:
@@ -66,7 +75,7 @@ def check_user(roll_no, password):
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users WHERE roll_no=%s AND password=%s", (roll_no, password))
     data = cursor.fetchone()
-    cursor.execute("SELECT ban_status FROM users WHERE roll_no=%s",(roll_no,))
+    cursor.execute("SELECT is_banned FROM users WHERE roll_no=%s",(roll_no,))
     status = cursor.fetchone()
     return (data,status)
 
@@ -310,7 +319,7 @@ def ban_user(roll_no):
         log_action("User Banned", f"Roll No: {roll_no}")
         conn = get_connection()
         cur = conn.cursor()
-        cur.execute("UPDATE users SET ban_status=1 WHERE roll_no=%s",(roll_no,))
+        cur.execute("UPDATE users SET is_banned=1 WHERE roll_no=%s",(roll_no,))
         conn.commit()
         conn.close()
         return True
@@ -323,7 +332,7 @@ def unban_user(roll_no):
         log_action("User Unbanned", f"Roll No: {roll_no}")
         conn = get_connection()
         cur = conn.cursor()
-        cur.execute("UPDATE users SET ban_status=0 WHERE roll_no=%s",(roll_no,))
+        cur.execute("UPDATE users SET is_banned=0 WHERE roll_no=%s",(roll_no,))
         conn.commit()
         conn.close()
         return True
@@ -335,7 +344,7 @@ def unban_user(roll_no):
 def get_banned_users():
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute("SELECT roll_no,first_name,last_name FROM users WHERE ban_status = 1")
+    cur.execute("SELECT roll_no,first_name,last_name FROM users WHERE is_banned = 1")
     rows = cur.fetchall()
     conn.close()
     return rows
@@ -343,7 +352,7 @@ def get_banned_users():
 def get_banned_users_all():
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute("SELECT first_name, last_name, email, password, mob_num, gender, roll_no FROM users WHERE ban_status=1")
+    cur.execute("SELECT first_name, last_name, email, password, mob_num, gender, roll_no FROM users WHERE is_banned=1")
     rows = cur.fetchall()
     conn.close()
     return rows
