@@ -348,7 +348,7 @@ def view_profile():
         st.warning("🚫 No user data found for the logged-in Roll No.")
         return
 
-    first_name, last_name, email, mob_num, gender, roll_no = user
+    first_name, last_name, email, mob_num, gender, roll_no,_ = user
 
     st.markdown(f"""
         <div class="profile-container">
@@ -881,7 +881,7 @@ if st.session_state.page not in ["login", "signup"]:
             "📌 Institute Info",
             "📝 Report an Issue",
             "📋 My Issue",
-            "📊 Issue Status",
+            "📊 Issue Dashboard",
             "👤 View Profile",
             "🔐 Change Password",
             "💬 Help & Support",
@@ -914,7 +914,7 @@ elif st.session_state.page == "📝 Report an Issue":
 elif st.session_state.page == "📋 My Issue":
     my_issue()    
 
-elif st.session_state.page =="📊 Issue Status":
+elif st.session_state.page =="📊 Issue Dashboard":
     issue_dashboard()
     # st.title(f"Welcome, {st.session_state.user}!")
     issue_status()
