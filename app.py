@@ -384,7 +384,8 @@ def edit_profile():
         st.warning("🚫 No user data found for the logged-in Roll No.")
         return
 
-    first_name, last_name, email, mob_num, gender, _ = user
+ 
+first_name, last_name, email, mob_num, gender, _, _ = user
 
     # Input fields for editing
     st.markdown("### 📝 Update Your Information")
