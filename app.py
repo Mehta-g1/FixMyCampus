@@ -385,7 +385,7 @@ def edit_profile():
         return
 
  
-first_name, last_name, email, mob_num, gender, _, _ = user
+    first_name, last_name, email, mob_num, gender, _, _ = user
 
     # Input fields for editing
     st.markdown("### 📝 Update Your Information")
